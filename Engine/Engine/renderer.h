@@ -12,6 +12,7 @@ public:
 	void Shutdown();
 	void Update();
 
+	void DeleteShaderProgram(GLuint programID);
 	GLuint CreateShaderProgram(const std::string& vertextShader, const std::string& fragmentShader);
 	GLuint CreateShader(const std::string& shader, GLenum shaderType);
 
