@@ -4,6 +4,8 @@
 #include "renderer.h"
 #include "scene01.h"
 #include "scene02.h"
+#include "scene03.h"
+#include "scenePractice.h"
 
 #include <glm/vec3.hpp>
 
@@ -54,7 +56,8 @@ enum vboID
 	VERTEX
 };
 
-int main() {
+int main() 
+{
 	std::shared_ptr<Engine> engine(new Engine);
 	if (!engine->Initialize())
 	{
@@ -63,8 +66,9 @@ int main() {
 	}
 
 	//Should we make it a shared pointer?
-	Scene* mainScene = new Scene02(engine.get());
-	if(!mainScene->Initialize()) {
+	Scene* mainScene = new Scene03(engine.get());
+	if(!mainScene->Initialize()) 
+	{
 		mainScene->Shutdown();
 		exit(EXIT_FAILURE);
 	}

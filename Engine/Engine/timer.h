@@ -12,9 +12,9 @@ public:
 	void Shutdown() final;
 	void Update() final;
 
-	float FrameTime() { return m_dt; }
-	float FramesPerSecond() { return m_fps; }
-	float MillisecondsPerSecond() { return m_mps; }
+	float GetDeltaTime() { return m_dt; }
+	float GetFramesPerSecond() { return m_fps; }
+	float GetMillisecondsPerSecond() { return m_mps; }
 
 private:
 	float m_dt;

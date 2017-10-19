@@ -159,6 +159,8 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene01.h" />
     <ClInclude Include="scene02.h" />
+    <ClInclude Include="scene03.h" />
+    <ClInclude Include="scenePractice.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system.h" />
     <ClInclude Include="targetver.h" />
@@ -169,12 +171,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Driver.cpp" />
-    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="driver.cpp" />
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="scene01.cpp" />
     <ClCompile Include="scene02.cpp" />
+    <ClCompile Include="scene03.cpp" />
+    <ClCompile Include="scenePractice.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -187,6 +191,8 @@
     <None Include="..\Resources\Shaders\cursor.vs" />
     <None Include="..\Resources\Shaders\default.fs" />
     <None Include="..\Resources\Shaders\default.vs" />
+    <None Include="..\Resources\Shaders\default3D.fs" />
+    <None Include="..\Resources\Shaders\default3D.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
