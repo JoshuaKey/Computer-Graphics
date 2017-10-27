@@ -154,13 +154,16 @@
   <ItemGroup>
     <ClInclude Include="..\..\Middleware\glad\include\glad\glad.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene01.h" />
     <ClInclude Include="scene02.h" />
     <ClInclude Include="scene03.h" />
+    <ClInclude Include="scene04.h" />
     <ClInclude Include="scenePractice.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system.h" />
     <ClInclude Include="targetver.h" />
@@ -173,12 +176,15 @@
     </ClCompile>
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="scene01.cpp" />
     <ClCompile Include="scene02.cpp" />
     <ClCompile Include="scene03.cpp" />
+    <ClCompile Include="scene04.cpp" />
     <ClCompile Include="scenePractice.cpp" />
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -188,11 +194,11 @@
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\cursor.vs" />
-    <None Include="..\Resources\Shaders\default.fs" />
-    <None Include="..\Resources\Shaders\default.vs" />
-    <None Include="..\Resources\Shaders\default3D.fs" />
-    <None Include="..\Resources\Shaders\default3D.vs" />
+    <None Include="..\Resources\Shaders\cursorVert.glsl" />
+    <None Include="..\Resources\Shaders\default3DFrag.glsl" />
+    <None Include="..\Resources\Shaders\default3DVert.glsl" />
+    <None Include="..\Resources\Shaders\defaultFrag.glsl" />
+    <None Include="..\Resources\Shaders\defaultVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

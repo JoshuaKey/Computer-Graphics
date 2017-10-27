@@ -16,6 +16,8 @@ public:
 	GLuint CreateShaderProgram(const std::string& vertextShader, const std::string& fragmentShader);
 	GLuint CreateShader(const std::string& shader, GLenum shaderType);
 
+	static std::string GetTypeString(GLenum type);
+
 private:
 	std::string ReadFile(const std::string& filename);
 

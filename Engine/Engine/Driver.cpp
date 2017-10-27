@@ -5,9 +5,11 @@
 #include "scene01.h"
 #include "scene02.h"
 #include "scene03.h"
+#include "scene04.h"
 #include "scenePractice.h"
 
 #include <glm/vec3.hpp>
+#include "image.h"
 
 float positionData[] =
 {
@@ -58,6 +60,8 @@ enum vboID
 
 int main() 
 {
+
+
 	std::shared_ptr<Engine> engine(new Engine);
 	if (!engine->Initialize())
 	{
@@ -66,7 +70,7 @@ int main()
 	}
 
 	//Should we make it a shared pointer?
-	Scene* mainScene = new Scene03(engine.get());
+	Scene* mainScene = new Scene04(engine.get());
 	if(!mainScene->Initialize()) 
 	{
 		mainScene->Shutdown();

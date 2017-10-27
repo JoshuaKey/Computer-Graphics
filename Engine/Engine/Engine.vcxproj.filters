@@ -63,6 +63,15 @@
     <ClInclude Include="scene03.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="scene04.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -98,21 +107,30 @@
     <ClCompile Include="engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene04.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\default.vs">
+    <None Include="..\Resources\Shaders\cursorVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\Shaders\default.fs">
+    <None Include="..\Resources\Shaders\default3DFrag.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\Shaders\cursor.vs">
+    <None Include="..\Resources\Shaders\default3DVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\Shaders\default3D.fs">
+    <None Include="..\Resources\Shaders\defaultFrag.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\Resources\Shaders\default3D.vs">
+    <None Include="..\Resources\Shaders\defaultVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
