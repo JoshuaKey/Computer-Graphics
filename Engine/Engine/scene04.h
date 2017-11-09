@@ -3,6 +3,11 @@
 #include "scene.h"
 #include <glm\mat4x4.hpp>
 
+#include "material.h"
+#include "shader.h"
+#include "camera.h"
+#include "light.h"
+
 class Renderer;
 class Input;
 class Timer;
@@ -22,27 +27,21 @@ private:
 	Input* m_input;
 	Timer* m_timer;
 
-	GLuint m_textureID;
-	GLuint m_textureID2;
-	GLuint m_programID;
-	GLuint m_vaoID;
+	Material m_material;
+	Shader m_shader;
 
-	float m_camYaw, m_camPitch;
-	glm::vec3 m_camPos;
-	glm::vec3 m_camDirection;
+	glm::vec3 target;
+	glm::vec3 camPos;
+	Camera::Data camData;
+	Camera m_camera = {"camera", this};
+
+	Light m_light = {"light", this};
+
+	GLuint m_vaoID;
 
 	glm::mat4 m_modelMatrix;
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_projectionMatrix;
 
-	GLint m_modelUniform;
-	GLint m_viewUniform;
-	GLint m_projectionUniform;
-
-	GLint m_ambienceUniform;
-	GLint m_lightColorUniform;
-	GLint m_lightPosUniform;
-	GLint m_viewPosUniform;
-	GLint m_texture1PosUniform;
-	GLint m_texture2PosUniform;
+	int vertices;
 };

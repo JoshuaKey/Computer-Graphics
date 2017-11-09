@@ -153,36 +153,56 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Middleware\glad\include\glad\glad.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="material.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="mesh2.h" />
+    <ClInclude Include="meshLoader.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="object.h" />
+    <ClInclude Include="renderable.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene01.h" />
     <ClInclude Include="scene02.h" />
     <ClInclude Include="scene03.h" />
     <ClInclude Include="scene04.h" />
+    <ClInclude Include="scene06.h" />
     <ClInclude Include="scenePractice.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Middleware\glad\src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="light.cpp" />
+    <ClCompile Include="material.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="meshLoader.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene01.cpp" />
     <ClCompile Include="scene02.cpp" />
     <ClCompile Include="scene03.cpp" />
     <ClCompile Include="scene04.cpp" />
+    <ClCompile Include="scene06.cpp" />
     <ClCompile Include="scenePractice.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="stdafx.cpp">

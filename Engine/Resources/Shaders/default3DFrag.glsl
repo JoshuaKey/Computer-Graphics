@@ -9,42 +9,77 @@ out vec4 FragColor;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
 
-uniform float ambience;
-uniform vec3 lightColor;
-uniform vec3 lightPos;  
+struct Material {
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float brightness;
+	float ambience;
+};
+
+uniform Material material;
+
+struct Light {
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 position;
+};
+
+uniform Light light;
+
+struct Fog{
+	float distMin;
+	float distMax;
+	vec3 color;
+};
+
+uniform Fog fog;
+  
 uniform vec3 viewPos; 
 
 void main(){
-	//vec3 color = vec3(texture(texture1, UV));
-
 	vec4 defaultColor = texture(texture1, UV);
-	vec4 specColor = texture(texture2, UV);
+	//vec4 specColor = texture(texture2, UV);
 
-	//vec3 color = vec3(mix(texture(texture1, UV), texture(texture2, UV), .2));
 
     // Normalize
     vec3 normal = normalize(Normal);
 
     // ambience
-    vec3 ambient = lightColor * ambience;
+    vec3 ambient = material.ambience * light.ambient * material.ambient;
     
     // diffuse
-    vec3 lightDir = normalize(lightPos - WorldPos);
+    vec3 lightDir = normalize(light.position - WorldPos);
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 diffuse = diff * light.diffuse * material.diffuse;
 
     // specular
     vec3 viewDir = normalize(viewPos - WorldPos);
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 8.0);
-    vec3 specular = spec * lightColor; 
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.brightness);
+    vec3 specular = spec * light.specular * material.specular; 
+
+	// fog
+	float fogDist = length(viewPos - WorldPos);
+	float fogIntensity = clamp((fogDist - fog.distMin) / (fog.distMax-fog.distMin), .0f, 1.0f);
+
+	// Use the dot Product to be more efficient with distance
+	
 
     //color = max(.0f, min(1.0f, (ambience + diff + spec))) * color;
     //color = (ambience + diff + spec) * color;
 
     //color = (ambient + diffuse + specular) * color;
 
-	vec4 color = defaultColor * vec4(ambient + diffuse, 1.0) + specColor * vec4(specular, 1.0);
+	//vec4 color = defaultColor * vec4(ambient + diffuse, 1.0) + specColor * vec4(specular, 1.0);
+	vec4 color = defaultColor * vec4(ambient + diffuse + specular, 1.0);
+
+	color = mix(color, vec4(fog.color, 1.0f), fogIntensity);
 
 	FragColor = color;
+	//FragColor = vec4(fog.color * fogDist, 1.0f);
+	
+	//FragColor = defaultColor;
+	//FragColor = vec4(diffuse, 1.0);
 }
