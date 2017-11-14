@@ -1,15 +1,18 @@
 #pragma once
 
-#include "object.h"
+#include "renderable.h"
 
-class Light : public Object
+class Light : public Renderable
 {
+public:
+	Light(const char* name, Scene* scene) : Renderable(name, scene) {}
+
+	virtual void Update();
+	virtual void Render();
+
 public:
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
 	glm::vec3 specular;
-
-	Light(const char* name, Scene* scene) : Object(name, scene) {}
-
-	virtual void Update();
+	Mesh m_mesh;
 };

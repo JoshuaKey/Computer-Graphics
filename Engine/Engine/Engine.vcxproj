@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Middleware\glad\include\glad\glad.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="directionalLight.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
@@ -172,8 +173,10 @@
     <ClInclude Include="scene03.h" />
     <ClInclude Include="scene04.h" />
     <ClInclude Include="scene06.h" />
+    <ClInclude Include="scene07.h" />
     <ClInclude Include="scenePractice.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="spotlight.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system.h" />
     <ClInclude Include="targetver.h" />
@@ -187,6 +190,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="directionalLight.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="image.cpp" />
@@ -203,8 +207,10 @@
     <ClCompile Include="scene03.cpp" />
     <ClCompile Include="scene04.cpp" />
     <ClCompile Include="scene06.cpp" />
+    <ClCompile Include="scene07.cpp" />
     <ClCompile Include="scenePractice.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="spotlight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -219,6 +225,8 @@
     <None Include="..\Resources\Shaders\default3DVert.glsl" />
     <None Include="..\Resources\Shaders\defaultFrag.glsl" />
     <None Include="..\Resources\Shaders\defaultVert.glsl" />
+    <None Include="..\Resources\Shaders\light3DFrag.glsl" />
+    <None Include="..\Resources\Shaders\light3DVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

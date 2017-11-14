@@ -36,12 +36,22 @@ void Mesh::Render()
 
 bool Mesh::Load(const std::string& filename)
 {
+	LARGE_INTEGER beginHigh, frequencyHigh, endHigh;
+	QueryPerformanceCounter(&beginHigh);
+	QueryPerformanceFrequency(&frequencyHigh);
+
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 
 	std::string returnMessage;
 	bool result = tinyobj::LoadObj(&attrib, &shapes, &materials, &returnMessage, filename.c_str());
+
+	QueryPerformanceCounter(&endHigh);
+
+	std::cout << "Time Elapsed: " << endHigh.QuadPart - beginHigh.QuadPart << " Or... " <<
+		(endHigh.QuadPart - beginHigh.QuadPart) / (frequencyHigh.QuadPart * 1.0) <<
+		" Seconds\n" << std::endl;
 
 	if (!returnMessage.empty())
 	{
@@ -107,6 +117,8 @@ bool Mesh::Load(const std::string& filename)
 		}
 	}
 
+
+
 	// compute normals if not provided
 	if (normals.empty() && !vertices.empty())
 	{
@@ -152,6 +164,8 @@ bool Mesh::Load(const std::string& filename)
 	}
 	
 	m_numVertices = m_buffers[0].numElements;
+
+
 
 	return true;
 }

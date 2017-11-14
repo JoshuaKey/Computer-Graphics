@@ -10,7 +10,6 @@ class Renderable : public Object
 {
 public:
 	Shader m_shader;
-	Material m_material;
 
 public:
 	Renderable(const char* name, Scene* scene) : Object(name, scene) {}

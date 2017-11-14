@@ -50,9 +50,10 @@ std::vector<T*> Scene::GetObjects()
 	for (int i = 0; i < length; i++)
 	{
 		auto obj = m_objects[i];
-		if (!strcmp(obj->name, name))
+		T* objCast = nullptr;
+		if ((objCast = dynamic_cast<T*>(obj)) != nullptr)
 		{
-			objects.push_back(static_cast<T*>(obj));
+			objects.push_back(objCast);
 		}
 	}
 	return objects;

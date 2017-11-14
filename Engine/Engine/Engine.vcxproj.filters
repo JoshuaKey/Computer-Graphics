@@ -126,6 +126,15 @@
     <ClInclude Include="shader.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="scene07.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="directionalLight.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="spotlight.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -194,6 +203,15 @@
     <ClCompile Include="model.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="scene07.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="directionalLight.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="spotlight.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\cursorVert.glsl">
@@ -209,6 +227,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\defaultVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\light3DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\light3DVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -15,11 +15,7 @@ uniform mat4 projection;
 void main(){
 	WorldPos = vec3(model *  vec4(aPos, 1.0f));
 	UV = aUV;
-	Normal = vec3(model *  vec4(aNormal, 1.0f));
+	Normal = vec3(model *  vec4(aNormal, 0.0f));
 
 	gl_Position = projection * view * model * vec4(aPos, 1.0);
-
-
-	//gl_Position = vec4(aPos, 1.0);
-	//gl_Position.z = 0;
 }

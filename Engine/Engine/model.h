@@ -14,5 +14,6 @@ public:
 
 public:
 	Mesh m_mesh; // Should this be a pointer???
+	Material m_material;
 
 };

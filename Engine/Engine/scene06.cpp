@@ -103,13 +103,13 @@ bool Scene06::Initialize()
 
 		m_model.m_shader.SetUniform("light.position", m_light.transform.position);
 
-		m_model.m_mesh.Load("../Resources/Meshes/cube_texture.obj");
+		m_model.m_mesh.Load("../Resources/Meshes/bunny.obj");
 
 		m_model.m_mesh.BindVertexAttrib(0, Mesh::eVertexType::POSITION);
 		m_model.m_mesh.BindVertexAttrib(1, Mesh::eVertexType::NORMAL);
 		m_model.m_mesh.BindVertexAttrib(2, Mesh::eVertexType::TEXCOORD);
 
-		m_model.transform.position = {-.0f, -.0f, 1.0f};
+		m_model.transform.position = {.0f, .0f, 1.0f};
 		
 
 		AddObject(&m_model);
@@ -129,8 +129,8 @@ void Scene06::Update()
 		obj->Update();
 	}
 
-	glm::quat val(glm::vec3(3.14f/3 * dt, .0f, .0f));
-	m_model.transform.rotation *= val;
+	//glm::quat val(glm::vec3(3.14f/3 * dt, .0f, .0f));
+	//m_model.transform.rotation *= val;
 
 	auto exitBut = m_input->GetButton("Exit");
 	if ( exitBut != Input::eButtonState::UP) 
@@ -180,18 +180,19 @@ void Scene06::Update()
 	// Mouse Input
 	glm::vec3 rotate(.0f);
 	{
+		static float currMouseX = m_input->GetAnalogAbsolute("x-axis");
+		static float currMouseY = m_input->GetAnalogAbsolute("y-axis");
+		float tempMouseX = m_input->GetAnalogAbsolute("x-axis");
+		float tempMouseY = m_input->GetAnalogAbsolute("y-axis");
+
 		if (m_input->GetButton("mRight") != Input::eButtonState::UP)
 		{
-			static float currMouseX = m_input->GetAnalogAbsolute("x-axis");
-			static float currMouseY = m_input->GetAnalogAbsolute("y-axis");
-			float tempMouseX = m_input->GetAnalogAbsolute("x-axis");
-			float tempMouseY = m_input->GetAnalogAbsolute("y-axis");
 			rotate.x = (tempMouseY - currMouseY) / 200.0f;
 			rotate.y = (tempMouseX - currMouseX) / 200.0f;
-
-			currMouseX = tempMouseX;
-			currMouseY = tempMouseY;
 		}
+
+		currMouseX = tempMouseX;
+		currMouseY = tempMouseY;
 	}
 	// .04 -.8 2.1
 	m_camera.UpdateTransformEditor(mvmt, rotate);

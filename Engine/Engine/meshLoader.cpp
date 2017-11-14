@@ -137,6 +137,10 @@ bool MeshLoader::ParseModel(const wchar_t *filePath,
 	std::vector<glm::vec2>& uv,
 	std::vector<glm::vec3>& norm) 
 {
+	LARGE_INTEGER beginHigh, frequencyHigh, endHigh;
+	QueryPerformanceCounter(&beginHigh);
+	QueryPerformanceFrequency(&frequencyHigh);
+
 	static const auto BUFFER_SIZE = 16*1024;
 	posValues.clear();
 	uvValues.clear();
@@ -175,6 +179,15 @@ bool MeshLoader::ParseModel(const wchar_t *filePath,
 		}
 
 		CloseHandle(file);
+
+
+
+		QueryPerformanceCounter(&endHigh);
+
+		std::cout << "Loading: " << filePath << "\n"
+			"Time Elapsed: " << endHigh.QuadPart - beginHigh.QuadPart << " Or... " <<
+			(endHigh.QuadPart - beginHigh.QuadPart) / (frequencyHigh.QuadPart * 1.0) <<
+			" Seconds\n" << std::endl;
 		return true;
 	} else
 	{

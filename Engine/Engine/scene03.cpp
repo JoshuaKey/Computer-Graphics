@@ -123,14 +123,11 @@ bool Scene03::Initialize()
 	glGenVertexArrays(1, &m_vaoID);
 	glBindVertexArray(m_vaoID);
 
-	GLuint vboID, eboID;
+	GLuint vboID;
 	glGenBuffers(1, &vboID);
-	//glGenBuffers (1, &eboID);
 	glBindBuffer(GL_ARRAY_BUFFER, vboID);
-	//glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, eboID);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeData), cubeData, GL_STATIC_DRAW);
-	//glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof (cubeIndexData), cubeIndexData, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);

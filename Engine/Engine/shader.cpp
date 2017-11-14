@@ -2,6 +2,7 @@
 
 #include "shader.h"
 #include "renderer.h"
+#include <glm\gtc\type_ptr.hpp>
 
 Shader::Shader() {}
 
@@ -107,13 +108,20 @@ void Shader::SetUniform(const char* uniformName, const glm::vec4& v4)
 void Shader::SetUniform(const char* uniformName, const glm::mat4& mx4)
 {
 	GLint uniformLocation = GetUniformLocation(uniformName);
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &mx4[0][0]);
+	//glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &mx4[0][0]);
+
+	auto val = glm::value_ptr(mx4);
+	/*for (int i = 0; i < 16; i++)
+	{
+		std::cout << val[i] << " ";
+	}*/
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, val);
 }
 
 void Shader::SetUniform(const char* uniformName, const glm::mat3& mx3)
 {
 	GLint uniformLocation = GetUniformLocation(uniformName);
-	glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, &mx3[0][0]);
+	glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(mx3));
 }
 
 void Shader::SetUniform(const char* uniformName, float vfloat)

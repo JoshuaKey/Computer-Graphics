@@ -1,10 +1,11 @@
 #include "stdafx.h"
 
-#include "light.h"
+#include "spotlight.h"
+
 #include "camera.h"
 #include "scene.h"
 
-void Light::Update()
+void SpotLight::Update()
 {
 	Camera* camera = m_scene->GetObject<Camera>("camera");
 
@@ -18,8 +19,9 @@ void Light::Update()
 	m_shader.SetUniform("projection", val);
 }
 
-void Light::Render()
+void SpotLight::Render()
 {
 	m_shader.Use();
 	m_mesh.Render();
 }
+

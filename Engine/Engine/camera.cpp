@@ -91,6 +91,7 @@ void Camera::UpdateTransformEditor(const glm::vec3& translate, const glm::vec3& 
 	glm::mat4 mxRotation = glm::mat4_cast(transform.rotation);
 
 	m_mxView = mxRotation * mxTranslation;
+
 }
 
 void Camera::UpdateTransformOrbit(const glm::vec3& translate, const glm::vec3& rotate)
@@ -116,18 +117,6 @@ void Camera::SetTarget(const glm::vec3& target)
 
 glm::vec3 Camera::GetDirection()
 {
-
-
-	//glm::vec3 direction = glm::vec3(m_mxView * glm::vec4(1.0f, 1.0f, 1.0f, .0f));
-	//return direction;
-
-	//glm::vec3 direction;
-	//glm::quat rot = transform.rotation;
-
-	//direction.x = 2 * (rot.x *rot.z + rot.w * rot.y);
-	//direction.y = 2 * (rot.y *rot.z + rot.w * rot.x);
-	//direction.z = 1 - 2 * (rot.x *rot.x + rot.y * rot.y);
-
-	//return direction;
-	return {.1f, .1f, .1f};
+	glm::vec3 direction = glm::vec3(m_mxView * glm::vec4(0.0f, 0.0f, 1.0f, .0f));
+	return direction;
 }
