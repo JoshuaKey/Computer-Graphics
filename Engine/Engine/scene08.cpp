@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "scene07.h"
+#include "scene08.h"
 
 #include "renderer.h"
 #include "input.h"
@@ -16,7 +16,7 @@ namespace
 	bool isDir = true;
 }
 
-bool Scene07::Initialize()
+bool Scene08::Initialize()
 {
 	m_input = m_engine->Get<Input>();
 	m_rend = m_engine->Get<Renderer>();
@@ -31,8 +31,6 @@ bool Scene07::Initialize()
 		m_input->AddButton(" ", Input::eButtonType::KEYBOARD, GLFW_KEY_SPACE);
 		m_input->AddButton("LShift", Input::eButtonType::KEYBOARD, GLFW_KEY_LEFT_SHIFT);
 		m_input->AddButton("Exit", Input::eButtonType::KEYBOARD, GLFW_KEY_ESCAPE);
-
-		m_input->AddButton("M", Input::eButtonType::KEYBOARD, 'M');
 	}
 
 	// Mouse Input
@@ -69,11 +67,15 @@ bool Scene07::Initialize()
 		AddObject(&m_camera);
 	}
 
+	worldAmbience = {.3f, .3f, .3f};
+
 	// Directional Light
 	{
 		m_directionalLight.diffuse = {1.0f, 1.0f, 1.0f};
 		m_directionalLight.specular = {1.0f, 1.0f, 1.0f};
-		//m_directionalLight.direction = glm::normalize(glm::vec3(.3f, .7f, .1f));
+		m_directionalLight.transform.rotation = glm::quat(glm::vec3(.3f, .7f, .1f));
+
+		m_directionalLight.isStatic = true;
 
 		AddObject(&m_directionalLight);
 	}
@@ -84,8 +86,7 @@ bool Scene07::Initialize()
 		m_light.m_shader.CompileShader("../Resources/Shaders/light3DFrag.glsl", GL_FRAGMENT_SHADER);
 		m_light.m_shader.Link();
 		m_light.m_shader.Use();
-		
-		//m_light.ambient = {1.0f, 1.0f, 1.0f};
+
 		m_light.diffuse = {1.0f, 1.0f, 1.0f};
 		m_light.specular = {1.0f, 1.0f, 1.0f};
 
@@ -93,8 +94,6 @@ bool Scene07::Initialize()
 
 		m_light.m_mesh.Load("../Resources/Meshes/box.obj");
 		m_light.m_mesh.BindVertexAttrib(0, Mesh::eVertexType::POSITION);
-		//m_model.m_mesh.BindVertexAttrib(1, Mesh::eVertexType::NORMAL);
-		//m_model.m_mesh.BindVertexAttrib(2, Mesh::eVertexType::TEXCOORD);
 
 		m_light.transform.position = {.0f, .0f, -3.0f};
 		m_light.transform.scale = {.2f, .2f, .2f};
@@ -111,8 +110,10 @@ bool Scene07::Initialize()
 
 		m_spotLight.diffuse = {1.0f, 1.0f, 1.0f};
 		m_spotLight.specular = {1.0f, 1.0f, 1.0f};
-		m_spotLight.cutoff = 3.14f * 2.0f;
-		m_spotLight.exponent = 1.0f;
+		m_spotLight.cutoff = 3.14f /3.0f;
+		m_spotLight.exponent = .2f;
+
+		m_spotLight.isStatic = true;
 
 		m_spotLight.m_shader.SetUniform("lightColor", glm::vec3(.1f, .2f, .2f));
 
@@ -126,10 +127,13 @@ bool Scene07::Initialize()
 		AddObject(&m_spotLight);
 	}
 
+	auto lights = GetObjects<Light>();
+	int lightLength = lights.size();
+
 	// Model
 	{
-		m_model.m_shader.CompileShader("../Resources/Shaders/default3DVert.glsl", GL_VERTEX_SHADER);
-		m_model.m_shader.CompileShader("../Resources/Shaders/default3DFrag.glsl", GL_FRAGMENT_SHADER);
+		m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DVert.glsl", GL_VERTEX_SHADER);
+		m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DFrag.glsl", GL_FRAGMENT_SHADER);
 		m_model.m_shader.Link();
 		m_model.m_shader.Use();
 
@@ -137,27 +141,19 @@ bool Scene07::Initialize()
 		m_model.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_shininess = 32.0f;
-		//m_model.m_material.m_ambience = .1f;
 		m_model.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_model.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_model.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
 		m_model.m_shader.SetUniform("material.specular", m_model.m_material.m_specular);
 		m_model.m_shader.SetUniform("material.shininess", m_model.m_material.m_shininess);
-		//m_model.m_shader.SetUniform("material.ambience", m_model.m_material.m_ambience);
 
-		
-		//m_model.m_shader.SetUniform("light.ambient", m_light.ambient);
-		//m_model.m_shader.SetUniform("light.diffuse", m_light.diffuse);
-		//m_model.m_shader.SetUniform("light.specular", m_light.specular);
-		
-		m_model.m_shader.SetUniform("light.diffuse", m_spotLight.diffuse);
-		m_model.m_shader.SetUniform("light.specular", m_spotLight.specular);
-		m_model.m_shader.SetUniform("light.position", m_spotLight.transform.position);
-		m_model.m_shader.SetUniform("light.direction", glm::normalize(
-			m_spotLight.transform.rotation * glm::vec3(.0f, 3.14f/6.0f, -3.14f/3.0f)));
-		m_model.m_shader.SetUniform("light.exponent", m_spotLight.exponent);
-		m_model.m_shader.SetUniform("light.cutoff", m_spotLight.cutoff);
+		m_model.m_shader.SetUniform("worldAmbience", worldAmbience);
+
+		for (int i = 0; i < lightLength; i++)
+		{
+			lights[i]->SetUniform(i, m_model.m_shader);
+		}
 
 		m_model.m_shader.SetUniform("fog.distMin", 1.0f);
 		m_model.m_shader.SetUniform("fog.distMax", 10.0f);
@@ -171,16 +167,14 @@ bool Scene07::Initialize()
 		m_model.m_mesh.BindVertexAttrib(2, Mesh::eVertexType::TEXCOORD);
 
 		m_model.transform.position = {1.0f, .0f, -1.0f};
-		//m_model.transform.scale = {.2f, .2f, .2f};
-
 
 		AddObject(&m_model);
 	}
 
 	// Exotic Model 
 	{
-		m_exoticModel.m_shader.CompileShader("../Resources/Shaders/default3DVert.glsl", GL_VERTEX_SHADER);
-		m_exoticModel.m_shader.CompileShader("../Resources/Shaders/default3DFrag.glsl", GL_FRAGMENT_SHADER);
+		m_exoticModel.m_shader.CompileShader("../Resources/Shaders/multiLight3DVert.glsl", GL_VERTEX_SHADER);
+		m_exoticModel.m_shader.CompileShader("../Resources/Shaders/multiLight3DFrag.glsl", GL_FRAGMENT_SHADER);
 		m_exoticModel.m_shader.Link();
 		m_exoticModel.m_shader.Use();
 
@@ -188,27 +182,18 @@ bool Scene07::Initialize()
 		m_exoticModel.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_exoticModel.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_exoticModel.m_material.m_shininess = 32.0f;
-		//m_exoticModel.m_material.m_ambience = .1f;
 		m_exoticModel.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_exoticModel.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_exoticModel.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
 		m_exoticModel.m_shader.SetUniform("material.specular", m_model.m_material.m_specular);
 		m_exoticModel.m_shader.SetUniform("material.shininess", m_model.m_material.m_shininess);
-		//m_exoticModel.m_shader.SetUniform("material.ambience", m_model.m_material.m_ambience);
+		m_model.m_shader.SetUniform("worldAmbience", worldAmbience);
 
-		
-		//m_exoticModel.m_shader.SetUniform("light.ambient", m_light.ambient);
-		//m_exoticModel.m_shader.SetUniform("light.diffuse", m_light.diffuse);
-		//m_exoticModel.m_shader.SetUniform("light.specular", m_light.specular);
-		
-		m_exoticModel.m_shader.SetUniform("light.diffuse", m_spotLight.diffuse);
-		m_exoticModel.m_shader.SetUniform("light.specular", m_spotLight.specular);
-		m_exoticModel.m_shader.SetUniform("light.position", m_spotLight.transform.position);
-		m_exoticModel.m_shader.SetUniform("light.direction", glm::normalize(
-			m_spotLight.transform.rotation * glm::vec3(.0f, 3.14f/6.0f, -3.14f/3.0f)));
-		m_exoticModel.m_shader.SetUniform("light.exponent", m_spotLight.exponent);
-		m_exoticModel.m_shader.SetUniform("light.cutoff", m_spotLight.cutoff);
+		for (int i = 0; i < lightLength; i++)
+		{
+			lights[i]->SetUniform(i, m_exoticModel.m_shader);
+		}
 
 		m_exoticModel.m_shader.SetUniform("fog.distMin", 1.0f);
 		m_exoticModel.m_shader.SetUniform("fog.distMax", 10.0f);
@@ -230,8 +215,8 @@ bool Scene07::Initialize()
 
 	// Plane
 	{
-		m_plane.m_shader.CompileShader("../Resources/Shaders/default3DVert.glsl", GL_VERTEX_SHADER);
-		m_plane.m_shader.CompileShader("../Resources/Shaders/default3DFrag.glsl", GL_FRAGMENT_SHADER);
+		m_plane.m_shader.CompileShader("../Resources/Shaders/multiLight3DVert.glsl", GL_VERTEX_SHADER);
+		m_plane.m_shader.CompileShader("../Resources/Shaders/multiLight3DFrag.glsl", GL_FRAGMENT_SHADER);
 		m_plane.m_shader.Link();
 		m_plane.m_shader.Use();
 
@@ -239,33 +224,23 @@ bool Scene07::Initialize()
 		m_plane.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_plane.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_plane.m_material.m_shininess = 32.0f;
-		//m_plane.m_material.m_ambience = .1f;
 		m_plane.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_plane.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_plane.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
 		m_plane.m_shader.SetUniform("material.specular", m_model.m_material.m_specular);
 		m_plane.m_shader.SetUniform("material.shininess", m_model.m_material.m_shininess);
-		//m_plane.m_shader.SetUniform("material.ambience", m_model.m_material.m_ambience);
 
-		
-		//m_plane.m_shader.SetUniform("light.ambient", m_light.ambient);
-		//m_plane.m_shader.SetUniform("light.diffuse", m_light.diffuse);
-		//m_plane.m_shader.SetUniform("light.specular", m_light.specular);
-		
-		m_plane.m_shader.SetUniform("light.diffuse", m_spotLight.diffuse);
-		m_plane.m_shader.SetUniform("light.specular", m_spotLight.specular);
-		m_plane.m_shader.SetUniform("light.position", m_spotLight.transform.position);
-		m_plane.m_shader.SetUniform("light.direction", glm::normalize(
-			m_spotLight.transform.rotation * glm::vec3(.0f, 3.14f/6.0f, -3.14f/3.0f)));
-		m_plane.m_shader.SetUniform("light.exponent", m_spotLight.exponent);
-		m_plane.m_shader.SetUniform("light.cutoff", m_spotLight.cutoff);
+		m_model.m_shader.SetUniform("worldAmbience", worldAmbience);
+
+		for (int i = 0; i < lightLength; i++)
+		{
+			lights[i]->SetUniform(i, m_plane.m_shader);
+		}
 
 		m_plane.m_shader.SetUniform("fog.distMin", 1.0f);
 		m_plane.m_shader.SetUniform("fog.distMax", 10.0f);
 		m_plane.m_shader.SetUniform("fog.color", glm::vec3(1.0f, .2f, .2f));
-
-		//m_exoticModel.m_shader.SetUniform("light.position", m_light.transform.position);
 
 		m_plane.m_mesh.Load("../Resources/Meshes/plane.obj");
 
@@ -275,7 +250,7 @@ bool Scene07::Initialize()
 
 		m_plane.transform.position = {0.0f, -1.0f, 0.0f};
 
-		m_plane.transform.scale = {20.0f, 1.0f, 10.0f};
+		m_plane.transform.scale = {20.0f, 1.0f, 20.0f};
 
 
 		AddObject(&m_plane);
@@ -302,7 +277,7 @@ bool Scene07::Initialize()
 
 	return true;
 }
-void Scene07::Update()
+void Scene08::Update()
 {
 	float dt = m_timer->GetDeltaTime();
 
@@ -317,36 +292,24 @@ void Scene07::Update()
 	relPos = glm::vec3(glm::rotate(glm::mat4(1.0f), 1.0f * dt, glm::vec3(.0f, 1.0f, .0f)) * glm::vec4(relPos, 1.0f));
 	m_light.transform.position = m_model.transform.position + relPos;
 
+	auto lights = GetObjects<Light>();
+	int lightLength = lights.size();
+	for (int i = 0; i < lightLength; i++)
+	{
+		if (!lights[i]->isStatic)
+		{
+			lights[i]->SetUniform(i, m_model.m_shader);
+			lights[i]->SetUniform(i, m_exoticModel.m_shader);
+			lights[i]->SetUniform(i, m_plane.m_shader);
+		}
+		
+	}
+
 	auto exitBut = m_input->GetButton("Exit");
 	if ( exitBut != Input::eButtonState::UP) 
 	{
 		glfwSetWindowShouldClose(m_rend->m_window, true);
 	}
-
-	auto dirBut = m_input->GetButton("M");
-	if ( dirBut == Input::eButtonState::DOWN) 
-	{
-		isDir = !isDir;
-		//if (isDir)
-		//{
-		//	m_model.m_shader.Use();
-		//	m_model.m_shader.SetUniform("light.position", glm::vec4(m_directionalLight.direction, .0f));
-		//	m_exoticModel.m_shader.Use();
-		//	m_exoticModel.m_shader.SetUniform("light.position", glm::vec4(m_directionalLight.direction, .0f));
-		//	m_plane.m_shader.Use();
-		//	m_plane.m_shader.SetUniform("light.position", glm::vec4(m_directionalLight.direction, .0f));
-		//}
-		
-	}
-	//if (!isDir)
-	//{
-	//	m_model.m_shader.Use();
-	//	m_model.m_shader.SetUniform("light.position", glm::vec4(m_light.transform.position, 1.0f));
-	//	m_exoticModel.m_shader.Use();
-	//	m_exoticModel.m_shader.SetUniform("light.position", glm::vec4(m_light.transform.position, 1.0f));
-	//	m_plane.m_shader.Use();
-	//	m_plane.m_shader.SetUniform("light.position", glm::vec4(m_light.transform.position, 1.0f));
-	//}
 
 	// Key Input
 	glm::vec3 mvmt(.0f);
@@ -408,9 +371,8 @@ void Scene07::Update()
 
 	camPos += mvmt;
 	target += mvmt;
-	//m_light.m_shader.SetUniform("view", glm::lookAt(camPos, target, glm::vec3(.0f, 1.0f, .0f)));
 }
-void Scene07::Render()
+void Scene08::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -421,6 +383,8 @@ void Scene07::Render()
 		renderables[i]->Render();
 	}
 
+	//m_plane.Render();
+
 	glfwSwapBuffers(m_rend->m_window);
 }
-void Scene07::Shutdown() {}
+void Scene08::Shutdown() {}

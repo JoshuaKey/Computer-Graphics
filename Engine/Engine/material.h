@@ -18,30 +18,26 @@ public:
 	glm::vec3 m_diffuse;
 	glm::vec3 m_specular;
 	float m_shininess;
-	float m_ambience;
 
 	std::vector<TextureInfo> m_textures;
 
 	Material(glm::vec3 ambient = {1.0f, 1.0f, 1.0f},
 		glm::vec3 diffuse = {1.0f, 1.0f, 1.0f},
 		glm::vec3 specular = {1.0f, 1.0f, 1.0f},
-		float brightness = 32.0f,
-		float ambience = .25f) :
+		float brightness = 32.0f) :
 		m_ambient(ambient), m_diffuse(diffuse), 
-		m_specular(specular), m_shininess(brightness), m_ambience(ambience) {}
+		m_specular(specular), m_shininess(brightness) {}
 	~Material() {}
 
 	void SetMaterial(glm::vec3 ambient = {1.0f, 1.0f, 1.0f},
 		glm::vec3 diffuse = {1.0f, 1.0f, 1.0f},
 		glm::vec3 specular = {1.0f, 1.0f, 1.0f},
-		float brightness = 2.0f,
-		float ambience = .25f)
+		float brightness = 2.0f)
 	{
 		m_ambient = ambient;
 		m_diffuse - diffuse;
 		m_specular = specular;
 		m_shininess = brightness;
-		m_ambience = ambience;
 	}
 
 	bool LoadTexture2D(const char* filename, GLuint activeTexture);

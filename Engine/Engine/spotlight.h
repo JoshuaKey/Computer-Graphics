@@ -1,21 +1,18 @@
 #pragma once
 
 
-#include "renderable.h"
+#include "light.h"
 
-class SpotLight : public Renderable
+class SpotLight : public Light
 {
 public:
-	SpotLight(const char* name, Scene* scene) : Renderable(name, scene) {}
+	SpotLight(const char* name, Scene* scene) : Light(name, scene) {}
 
 	virtual void Update();
 	virtual void Render();
+	virtual void SetUniform(int id, Shader &s);
 
 public:
-	// Position and Rotation are in Transform
-	glm::vec3 diffuse;
-	glm::vec3 specular;
 	float exponent;
 	float cutoff;
-	Mesh m_mesh;
 };

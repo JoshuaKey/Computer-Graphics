@@ -8,6 +8,7 @@
 #include "scene04.h"
 #include "scene06.h"
 #include "scene07.h"
+#include "scene08.h"
 #include "scenePractice.h"
 
 #include <glm/vec3.hpp>
@@ -25,7 +26,7 @@ int main()
 	}
 
 	//Should we make it a shared pointer?
-	Scene* mainScene = new Scene07(engine.get());
+	Scene* mainScene = new Scene08(engine.get());
 	if(!mainScene->Initialize()) 
 	{
 		mainScene->Shutdown();

@@ -207,14 +207,14 @@ bool Scene04::Initialize()
 	// Materials / Textures
 	{
 		m_material.SetMaterial( {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f},
-			32.0f, .25f);
+			32.0f);
 		m_material.LoadTexture2D("../Resources/Textures/DargonSkin.bmp", GL_TEXTURE0);
 		m_material.LoadTexture2D("../Resources/Textures/crate_specular2.bmp", GL_TEXTURE1);
 	}
 
 	// Light 
 	{
-		m_light.ambient = {1.0f, 1.0f, 1.0f};
+		//m_light.ambient = {1.0f, 1.0f, 1.0f};
 		m_light.diffuse = {1.0f, 1.0f, 1.0f};
 		m_light.specular = {1.0f, 1.0f, 1.0f};
 		m_light.transform.position = {.0f, 5.0f, .0f};
@@ -311,13 +311,13 @@ void Scene04::Render()
 		m_shader.SetUniform("texture1", 0);
 		m_shader.SetUniform("texture2", 1);
 
-		m_shader.SetUniform("material.ambience", m_material.m_ambience);
+		//m_shader.SetUniform("material.ambience", m_material.m_ambience);
 		m_shader.SetUniform("material.brightness", m_material.m_shininess);
 		m_shader.SetUniform("material.ambient", m_material.m_ambient);
 		m_shader.SetUniform("material.diffuse", m_material.m_diffuse);
 		m_shader.SetUniform("material.specular",m_material.m_specular);
 
-		m_shader.SetUniform("light.ambient", m_light.ambient);
+		//m_shader.SetUniform("light.ambient", m_light.ambient);
 		m_shader.SetUniform("light.diffuse", m_light.diffuse);
 		m_shader.SetUniform("light.specular", m_light.specular);
 		m_shader.SetUniform("light.position", m_light.transform.position);

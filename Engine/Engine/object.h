@@ -9,6 +9,7 @@ class Object
 public:
 	const char* name;
 	Transform transform;
+	bool isStatic = false;
 
 protected:
 	Scene* m_scene;

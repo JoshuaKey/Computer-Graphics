@@ -1,20 +1,16 @@
 #pragma once
 
-#include "object.h"
+#include "light.h"
 class Scene;
 
-class DirectionalLight : public Object
+class DirectionalLight : public Light
 {
 public:
-	DirectionalLight(const char* name, Scene* scene) : Object(name, scene) {}
+	DirectionalLight(const char* name, Scene* scene) : Light(name, scene) {}
 
-	void Initialize();
 	virtual void Update();
-
+	virtual void Render();
+	virtual void SetUniform(int id, Shader &s);
 
 public:
-	glm::vec3 ambient;
-	glm::vec3 diffuse;
-	glm::vec3 specular;
-	glm::vec3 direction;
 };

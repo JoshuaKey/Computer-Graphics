@@ -135,6 +135,9 @@
     <ClInclude Include="spotlight.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="scene08.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -212,6 +215,9 @@
     <ClCompile Include="spotlight.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="scene08.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\cursorVert.glsl">
@@ -233,6 +239,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\light3DVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\multiLight3DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\multiLight3DVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -19,8 +19,8 @@ struct Material {
 
 uniform Material material;
 
-// For Directional and Point Lights
 /*
+// For Directional and Point Lights
 struct Light {
 	vec3 ambient;
 	vec3 diffuse;
@@ -28,6 +28,7 @@ struct Light {
 	vec4 position;
 };
 */
+
 
 // For SpotLights
 struct Light {
@@ -56,6 +57,7 @@ void phong(vec4 position, vec3 normal, out vec3 ambientDiffuse, out vec3 specula
 	// Ambience
 	vec3 ambient = material.ambience * material.ambient;
 
+	
 	// For Spot Lights
 	vec3 directionToLight = normalize(vec3(position) - WorldPos);
 	vec3 spotDirection = normalize(light.direction);
@@ -86,11 +88,11 @@ void phong(vec4 position, vec3 normal, out vec3 ambientDiffuse, out vec3 specula
 		ambientDiffuse = ambient;
 		specular = vec3(.0f, .0f, .0f);
 	}
-
+	
 
 	// For Poitn and Directional Lights
+	
 	/*
-
 	// Diffuse
 	vec3 lightDir = vec3(.0f, .0f, .0f);
 	if(position.w == 0){ // Direction
@@ -122,6 +124,7 @@ void main(){
 	vec3 ambientDiffuse;
 	vec3 specular;
 	phong(vec4(light.position, 1.0f), normal, ambientDiffuse, specular);
+	//phong(light.position, normal, ambientDiffuse, specular);
 
 
     // ambience

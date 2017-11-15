@@ -64,7 +64,7 @@ bool Scene06::Initialize()
 
 	// Light 
 	{
-		m_light.ambient = {1.0f, 1.0f, 1.0f};
+		//m_light.ambient = {1.0f, 1.0f, 1.0f};
 		m_light.diffuse = {1.0f, 1.0f, 1.0f};
 		m_light.specular = {1.0f, 1.0f, 1.0f};
 		m_light.transform.position = {.0f, 5.0f, .0f};
@@ -83,16 +83,16 @@ bool Scene06::Initialize()
 		m_model.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_shininess = 32.0f;
-		m_model.m_material.m_ambience = .25f;
+		//m_model.m_material.m_ambience = .25f;
 		m_model.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_model.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_model.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
 		m_model.m_shader.SetUniform("material.specular", m_model.m_material.m_specular);
 		m_model.m_shader.SetUniform("material.shininess", m_model.m_material.m_shininess);
-		m_model.m_shader.SetUniform("material.ambience", m_model.m_material.m_ambience);
+		//m_model.m_shader.SetUniform("material.ambience", m_model.m_material.m_ambience);
 
-		m_model.m_shader.SetUniform("light.ambient", m_light.ambient);
+		//m_model.m_shader.SetUniform("light.ambient", m_light.ambient);
 		m_model.m_shader.SetUniform("light.diffuse", m_light.diffuse);
 		m_model.m_shader.SetUniform("light.specular", m_light.specular);
 
