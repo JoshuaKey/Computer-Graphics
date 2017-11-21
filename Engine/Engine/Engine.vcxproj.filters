@@ -138,6 +138,12 @@
     <ClInclude Include="scene08.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="scene09.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="scene10.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -218,6 +224,12 @@
     <ClCompile Include="scene08.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="scene09.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="scene10.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\cursorVert.glsl">
@@ -227,12 +239,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\default3DVert.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\defaultFrag.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\defaultVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\light3DFrag.glsl">
@@ -245,6 +251,24 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\multiLight3DVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\default2DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\default2DVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\color2DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\color2DVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\skybox3DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\skybox3DVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

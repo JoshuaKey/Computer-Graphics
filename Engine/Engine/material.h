@@ -9,6 +9,7 @@ struct TextureInfo
 {
 	GLuint activeTexture; // Texture Unit
 	GLuint texture; // Texture ID
+	GLenum type; // Texture Type
 };
 
 class Material
@@ -41,6 +42,10 @@ public:
 	}
 
 	bool LoadTexture2D(const char* filename, GLuint activeTexture);
+	bool LoadTextureCube(const char* basename, const std::vector<std::string>& suffixes, const char* type,
+		GLuint activeTexture);
+	void AddTexture(GLuint textureID, GLuint activeTexture);
 	void SetTextures();
 
+	static GLuint CreateTexture(int width, int height);
 };

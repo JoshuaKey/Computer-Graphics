@@ -175,6 +175,8 @@
     <ClInclude Include="scene06.h" />
     <ClInclude Include="scene07.h" />
     <ClInclude Include="scene08.h" />
+    <ClInclude Include="scene09.h" />
+    <ClInclude Include="scene10.h" />
     <ClInclude Include="scenePractice.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="spotlight.h" />
@@ -210,6 +212,8 @@
     <ClCompile Include="scene06.cpp" />
     <ClCompile Include="scene07.cpp" />
     <ClCompile Include="scene08.cpp" />
+    <ClCompile Include="scene09.cpp" />
+    <ClCompile Include="scene10.cpp" />
     <ClCompile Include="scenePractice.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="spotlight.cpp" />
@@ -222,15 +226,19 @@
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\Shaders\color2DFrag.glsl" />
+    <None Include="..\Resources\Shaders\color2DVert.glsl" />
     <None Include="..\Resources\Shaders\cursorVert.glsl" />
+    <None Include="..\Resources\Shaders\default2DFrag.glsl" />
+    <None Include="..\Resources\Shaders\default2DVert.glsl" />
     <None Include="..\Resources\Shaders\default3DFrag.glsl" />
     <None Include="..\Resources\Shaders\default3DVert.glsl" />
-    <None Include="..\Resources\Shaders\defaultFrag.glsl" />
-    <None Include="..\Resources\Shaders\defaultVert.glsl" />
     <None Include="..\Resources\Shaders\light3DFrag.glsl" />
     <None Include="..\Resources\Shaders\light3DVert.glsl" />
     <None Include="..\Resources\Shaders\multiLight3DFrag.glsl" />
     <None Include="..\Resources\Shaders\multiLight3DVert.glsl" />
+    <None Include="..\Resources\Shaders\skybox3DFrag.glsl" />
+    <None Include="..\Resources\Shaders\skybox3DVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
