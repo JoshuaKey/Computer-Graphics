@@ -26,7 +26,7 @@ vec3 reflection()
 	vec3 worldNormal = vec3(model * vec4(aNorm, 0.0));
 	vec3 worldView = normalize(viewPos - worldPosition);
 
-	return reflect(-worldView, worldNormal);
+	return reflect(worldView, worldNormal);
 }
 
 void main()

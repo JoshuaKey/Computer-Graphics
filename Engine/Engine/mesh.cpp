@@ -74,6 +74,8 @@ bool Mesh::Load(const std::string& filename)
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
+	std::vector<glm::vec3> tangents;
+	std::vector<glm::vec3> bitTangents;
 
 	// load buffers
 	for (const auto& shape : shapes)
@@ -84,6 +86,7 @@ bool Mesh::Load(const std::string& filename)
 			for (size_t v = 0; v < numVerts; v++)
 			{
 				tinyobj::index_t index = shape.mesh.indices[indexOffset + v];
+				
 				
 				if (index.vertex_index != -1)
 				{
@@ -97,6 +100,7 @@ bool Mesh::Load(const std::string& filename)
 				if (index.normal_index != -1)
 				{
 					glm::vec3 normal(0.0f);
+					
 					normal.x = attrib.normals[3 * index.normal_index + 0];
 					normal.y = attrib.normals[3 * index.normal_index + 1];
 					normal.z = attrib.normals[3 * index.normal_index + 2];
@@ -115,9 +119,7 @@ bool Mesh::Load(const std::string& filename)
 			
 			//shape.mesh.material_ids[numVerts];
 		}
-	}
-
-
+	}	
 
 	// compute normals if not provided
 	if (normals.empty() && !vertices.empty())
@@ -136,6 +138,8 @@ bool Mesh::Load(const std::string& filename)
 	if (!vertices.empty())
 	{
 		AddBuffer(eVertexType::POSITION, vertices.size(), sizeof(glm::vec3), (GLvoid*)vertices.data());
+		glm::vec3* data = (glm::vec3*)(GLvoid*)vertices.data();
+		if(data != nullptr) { data = nullptr; }
 	}
 	if (!normals.empty())
 	{
@@ -144,6 +148,37 @@ bool Mesh::Load(const std::string& filename)
 	if (!texcoords.empty())
 	{
 		AddBuffer(eVertexType::TEXCOORD, texcoords.size(), sizeof(glm::vec2), (GLvoid*)texcoords.data());
+	}
+	if (!vertices.empty() && !texcoords.empty() && !normals.empty())
+	{
+
+		for (int i = 0; i < vertices.size(); i += 3)
+		{
+			glm::vec3 bitTangent;
+			glm::vec3 tangent;
+
+			glm::vec3 pos1 = vertices[i];
+			glm::vec3 pos2 = vertices[i+1];
+			glm::vec3 pos3 = vertices[i+2];
+			glm::vec2 uv1 = texcoords[i];
+			glm::vec2 uv2 = texcoords[i+1];
+			glm::vec2 uv3 = texcoords[i+2];
+
+			CalculateTangent(&tangent, &bitTangent, pos1, pos2, pos3, uv1, uv2, uv3);
+			glm::vec3 normal = normals[i];
+			glm::vec3 crossT = glm::cross(normal, tangent); // This
+			glm::vec3 Tcross = glm::cross(tangent, normal);
+			glm::vec3 crossB = glm::cross(normal, bitTangent);
+			glm::vec3 Bcross = glm::cross(bitTangent, normal); // This
+			tangents.push_back(tangent);
+			tangents.push_back(tangent);
+			tangents.push_back(tangent);
+			bitTangents.push_back(bitTangent);
+			bitTangents.push_back(bitTangent);
+			bitTangents.push_back(bitTangent);
+		}
+		AddBuffer(eVertexType::TANGENT, tangents.size(), sizeof(glm::vec3), (GLvoid*)tangents.data());
+		AddBuffer(eVertexType::BITTANGENT, bitTangents.size(), sizeof(glm::vec3), (GLvoid*)bitTangents.data());
 	}
 
 	// create vertex array object
@@ -162,31 +197,68 @@ bool Mesh::Load(const std::string& filename)
 		int numValueSize = buffer.elementSizeInBytes / sizeof(float);
 		glVertexAttribFormat(static_cast<int>(buffer.type), numValueSize, GL_FLOAT, GL_FALSE, 0);
 	}
-	
+
 	m_numVertices = m_buffers[0].numElements;
 
-
-
 	return true;
+}
+
+//void Mesh::AddTangentBuffer()
+//{
+//	if (CheckBufferExistence(eVertexType::TANGENT)) { return; } // Already exists
+//
+//	//BufferInfo tanBuffer = {eVertexType::TANGENT, 0, tangents.size(), sizeof(glm::vec3), (GLvoid*)tangents.data()};
+//	//BufferInfo bitTanBuffer = {eVertexType::BITTANGENT, 0, bitTangents.size(), sizeof(glm::vec3),
+//	//	(GLvoid*)bitTangents.data()};
+//	//m_buffers.push_back(tanBuffer);
+//	//m_buffers.push_back(bitTanBuffer);
+//
+//	//// TANGENT
+//	//// create vertex buffer
+//	//glGenBuffers(1, &tanBuffer.vbo);
+//	//glBindBuffer(GL_ARRAY_BUFFER, tanBuffer.vbo);
+//	//glBufferData(GL_ARRAY_BUFFER, tanBuffer.numElements * tanBuffer.elementSizeInBytes, tanBuffer.data, GL_STATIC_DRAW);
+//
+//	//// bind vertex buffer in vao
+//	//glBindVertexBuffer(static_cast<int>(tanBuffer.type), tanBuffer.vbo, 0, tanBuffer.elementSizeInBytes);
+//	//int numValueSize = tanBuffer.elementSizeInBytes / sizeof(float);
+//	//glVertexAttribFormat(static_cast<int>(tanBuffer.type), numValueSize, GL_FLOAT, GL_FALSE, 0);
+//
+//	//// BIT TANGENT
+//	//// create vertex buffer
+//	//glGenBuffers(1, &bitTanBuffer.vbo);
+//	//glBindBuffer(GL_ARRAY_BUFFER, bitTanBuffer.vbo);
+//	//glBufferData(GL_ARRAY_BUFFER, bitTanBuffer.numElements * bitTanBuffer.elementSizeInBytes, bitTanBuffer.data, 
+//	//	GL_STATIC_DRAW);
+//
+//	//// bind vertex buffer in vao
+//	//glBindVertexBuffer(static_cast<int>(bitTanBuffer.type), bitTanBuffer.vbo, 0, bitTanBuffer.elementSizeInBytes);
+//	//numValueSize = bitTanBuffer.elementSizeInBytes / sizeof(float);
+//	//glVertexAttribFormat(static_cast<int>(bitTanBuffer.type), numValueSize, GL_FLOAT, GL_FALSE, 0);
+//}
+
+bool Mesh::CheckBufferExistence(eVertexType type)
+{
+	for (size_t i = 0; i < m_buffers.size(); ++i)
+	{
+		if (m_buffers[i].type == type)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void Mesh::AddBuffer(eVertexType type, size_t numElements, size_t elementSize, void* data)
 {
 	// check if vertex buffer already exists
-	bool exists = false;
-	for (size_t i = 0; i < m_buffers.size(); ++i)
-	{
-		if (m_buffers[i].type == type)
-		{
-			exists = true;
-			break;
-		}
-	}
 
-	if (!exists)
+	if (!CheckBufferExistence(type))
 	{
 		m_buffers.push_back({ type, 0, numElements, elementSize, data });
 	}
+	glm::vec3* data2 = (glm::vec3*)(GLvoid*)data;
+	if(data != nullptr) { data = nullptr; }
 }
 
 void Mesh::CalculateNormal(glm::vec3& normal, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
@@ -196,4 +268,33 @@ void Mesh::CalculateNormal(glm::vec3& normal, const glm::vec3& v0, const glm::ve
 
 	normal = glm::cross(v1 - v0, v2 - v0);
 	normal = glm::normalize(normal);
+}
+
+void Mesh::CalculateTangent(glm::vec3* tangent, glm::vec3* bitTangent, 
+	const glm::vec3& pos1, const glm::vec3& pos2, const glm::vec3& pos3,
+	const glm::vec2& uv1, const glm::vec2& uv2, const glm::vec2& uv3)
+{
+	glm::vec3 edge1 = pos2 - pos1;
+	glm::vec3 edge2 = pos3 - pos1;
+	glm::vec2 deltaUV1 = uv2 - uv1;
+	glm::vec2 deltaUV2 = uv3 - uv1;  
+
+	float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+	 if (tangent != nullptr)
+	 {
+		 tangent->x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		 tangent->y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		 tangent->z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		 *tangent = glm::normalize(*tangent);
+	 }
+
+	if (bitTangent != nullptr)
+	{
+		bitTangent->x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		bitTangent->y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		bitTangent->z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		*bitTangent = glm::normalize(*bitTangent); 
+	}
+	
 }

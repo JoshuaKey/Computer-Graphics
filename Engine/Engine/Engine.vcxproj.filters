@@ -144,6 +144,9 @@
     <ClInclude Include="scene10.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="scene11.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -230,6 +233,9 @@
     <ClCompile Include="scene10.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="scene11.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\cursorVert.glsl">
@@ -269,6 +275,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Resources\Shaders\skybox3DVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\normalMap3DFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\normalMap3DVert.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -11,7 +11,9 @@ public:
 		POSITION,
 		NORMAL,
 		COLOR,
-		TEXCOORD
+		TEXCOORD,
+		BITTANGENT,
+		TANGENT
 	};
 
 	struct BufferInfo
@@ -34,8 +36,12 @@ public:
 	bool Load(const std::string& filename);
 
 	static void CalculateNormal(glm::vec3& normal, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
+	static void CalculateTangent(glm::vec3* tangent, glm::vec3* bitTangent, 
+		const glm::vec3& pos1, const glm::vec3& pos2, const glm::vec3& pos3,
+		const glm::vec2& uv1, const glm::vec2& uv2, const glm::vec2& uv3);
 
 private:
+	bool CheckBufferExistence(eVertexType type);
 	void AddBuffer(eVertexType type, size_t numElements, size_t elementSize, void* data);
 
 private:

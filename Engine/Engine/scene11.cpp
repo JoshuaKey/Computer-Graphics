@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "scene10.h"
+#include "scene11.h"
 
 #include "renderer.h"
 #include "input.h"
@@ -13,7 +13,7 @@
 
 #include <iostream>
 
-bool Scene10::Initialize()
+bool Scene11::Initialize()
 {
 	m_input = m_engine->Get<Input>();
 	m_rend = m_engine->Get<Renderer>();
@@ -71,7 +71,7 @@ bool Scene10::Initialize()
 
 		m_directionalLight.isStatic = true;
 
-		AddObject(&m_directionalLight);
+		//AddObject(&m_directionalLight);
 	}
 
 	// Light 
@@ -104,8 +104,8 @@ bool Scene10::Initialize()
 
 		m_spotLight.diffuse = {1.0f, 1.0f, 1.0f};
 		m_spotLight.specular = {1.0f, 1.0f, 1.0f};
-		m_spotLight.cutoff = 3.14f /3.0f;
-		m_spotLight.exponent = .2f;
+		m_spotLight.cutoff = 3.14f / 2.0f;
+		m_spotLight.exponent = 1.0f;
 
 		m_spotLight.isStatic = true;
 
@@ -118,7 +118,7 @@ bool Scene10::Initialize()
 		//m_spotLight.transform.rotation *= glm::quat(glm::vec3(.0f, 3.14f/2.0f, .0f));
 		m_spotLight.transform.scale = {.05f, .05f, .05f};
 
-		AddObject(&m_spotLight);
+		//AddObject(&m_spotLight);
 	}
 
 	auto lights = GetObjects<Light>();
@@ -126,8 +126,10 @@ bool Scene10::Initialize()
 
 	// Model
 	{
-		m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DVert.glsl", GL_VERTEX_SHADER);
-		m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DFrag.glsl", GL_FRAGMENT_SHADER);
+		//m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DVert.glsl", GL_VERTEX_SHADER);
+		//m_model.m_shader.CompileShader("../Resources/Shaders/multiLight3DFrag.glsl", GL_FRAGMENT_SHADER);
+		m_model.m_shader.CompileShader("../Resources/Shaders/normalMap3DVert.glsl", GL_VERTEX_SHADER);
+		m_model.m_shader.CompileShader("../Resources/Shaders/normalMap3DFrag.glsl", GL_FRAGMENT_SHADER);
 		m_model.m_shader.Link();
 		m_model.m_shader.Use();
 
@@ -135,7 +137,8 @@ bool Scene10::Initialize()
 		m_model.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_model.m_material.m_shininess = 32.0f;
-		m_model.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
+		m_model.m_material.LoadTexture2D("../Resources/Textures/rocks.jpg", GL_TEXTURE0);
+		m_model.m_material.LoadTexture2D("../Resources/Textures/rocks_normal.jpg", GL_TEXTURE1);
 
 		m_model.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_model.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
@@ -159,6 +162,38 @@ bool Scene10::Initialize()
 		m_model.m_mesh.BindVertexAttrib(0, Mesh::eVertexType::POSITION);
 		m_model.m_mesh.BindVertexAttrib(1, Mesh::eVertexType::NORMAL);
 		m_model.m_mesh.BindVertexAttrib(2, Mesh::eVertexType::TEXCOORD);
+		m_model.m_mesh.BindVertexAttrib(3, Mesh::eVertexType::TANGENT);
+		m_model.m_mesh.BindVertexAttrib(4, Mesh::eVertexType::BITTANGENT);
+
+		// To calculate Tangent and BitTangent
+		// We need to parse the normalMap and identify our tangent and bitangent relative to the face normal
+		
+		// We need to get the edges of the parsed triangle face aka pos3 - pos1 and pos2 - pos1
+		// We need to get the delta coordinates of the UV, aka uv3 - uv1 and uv2 - uv1
+
+		//glm::vec3 edge1 = pos2 - pos1;
+		//glm::vec3 edge2 = pos3 - pos1;
+		//glm::vec2 deltaUV1 = uv2 - uv1;
+		//glm::vec2 deltaUV2 = uv3 - uv1;  
+
+		// After that we do some matrix math to get our tangent and bitangent
+
+		//float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+		//tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+		//tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+		//tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+		//tangent1 = glm::normalize(tangent1);
+
+		//bitangent1.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+		//bitangent1.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+		//bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+		//bitangent1 = glm::normalize(bitangent1); 
+
+		
+
+
+
 
 		m_model.transform.position = {1.0f, .0f, -1.0f};
 
@@ -176,7 +211,7 @@ bool Scene10::Initialize()
 		m_exoticModel.m_material.m_diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_exoticModel.m_material.m_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_exoticModel.m_material.m_shininess = 32.0f;
-		m_exoticModel.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
+		//m_exoticModel.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_exoticModel.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_exoticModel.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
@@ -221,7 +256,7 @@ bool Scene10::Initialize()
 
 		//m_renderedTexture = Material::CreateTexture(Rend_Text_WIDTH, Rend_Text_HEIGHT);
 		//m_plane.m_material.AddTexture(m_renderedTexture, GL_TEXTURE0);
-		m_plane.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
+		//m_plane.m_material.LoadTexture2D("../Resources/Textures/crate.bmp", GL_TEXTURE0);
 
 		m_plane.m_shader.SetUniform("material.ambient", m_model.m_material.m_ambient);
 		m_plane.m_shader.SetUniform("material.diffuse", m_model.m_material.m_diffuse);
@@ -300,7 +335,7 @@ bool Scene10::Initialize()
 
 		m_skyBox.transform.scale = {20.0f, 20.0f, 20.0f};
 
-		AddObject(&m_skyBox);
+		//AddObject(&m_skyBox);
 	}
 
 	// Suzanne
@@ -319,8 +354,7 @@ bool Scene10::Initialize()
 		m_suzanne.m_mesh.BindVertexAttrib(1, Mesh::eVertexType::NORMAL);
 
 		m_suzanne.transform.position = {1.0f, .0f, -1.0f};
-		//December 10:20 29th
-		AddObject(&m_suzanne);
+		//AddObject(&m_suzanne);
 	}
 
 	// Frame Buffer
@@ -348,7 +382,7 @@ bool Scene10::Initialize()
 
 	return true;
 }
-void Scene10::Update()
+void Scene11::Update()
 {
 	float dt = m_timer->GetDeltaTime();
 
@@ -443,26 +477,26 @@ void Scene10::Update()
 
 	m_camera.UpdateTransformEditor(mvmt, rotate);
 }
-void Scene10::Render()
+void Scene11::Render()
 {
 	// Render to Texture
-	glViewport(0, 0, Rend_Text_WIDTH, Rend_Text_HEIGHT);
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	//glViewport(0, 0, Rend_Text_WIDTH, Rend_Text_HEIGHT);
+	//glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	auto renderables = GetObjects<Renderable>();
 	int length = renderables.size();
-	for (int i = 0; i < length; i++)
-	{
-		renderables[i]->Render();
-	}
+	//for (int i = 0; i < length; i++)
+	//{
+		//renderables[i]->Render();
+	//}
 
-	glFlush();
+	//glFlush();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// Render as normal
+	//// Render as normal
 	glViewport(0, 0, m_rend->m_width, m_rend->m_height);
 	glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, 1.0f);
 
@@ -472,8 +506,8 @@ void Scene10::Render()
 	{
 		renderables[i]->Render();
 	}
-	m_uiTexture.Render();
+	//m_uiTexture.Render();
 
 	glfwSwapBuffers(m_rend->m_window);
 }
-void Scene10::Shutdown() {}
+void Scene11::Shutdown() {}
